@@ -1,0 +1,89 @@
+def display_library(library):
+    print("\nLibrary -")
+    if library:
+        for idx, (title, rating) in enumerate(library, start=1):
+            print(f"{idx:02d}. {title}, {rating}/5")
+    else:
+        print("Your library is currently empty.")
+
+def sort_library(library):
+    return sorted(library, key=lambda x: x[1], reverse=True)
+
+def main():
+    library = []
+    print("Welcome to your little library")
+
+    while True:
+        library = sort_library(library)
+        display_library(library)
+        print("\nSelection Menu -")
+        print("Option 1. Book Upload")
+        print("Option 2. Ranking Edit")
+        print("Option 3. Delete a Book")
+        print("Option 4. EXIT")
+
+        choice = input("\nChoose one of the following (1-4): ")
+
+        if choice == "1":
+            title = input("Enter the book title: ").strip()
+            while True:
+                try:
+                    rating = int(input("Rate the book (1-5): "))
+                    if 1 <= rating <= 5:
+                        break
+                    else:
+                        print("Rating must be between 1 and 5.")
+                except ValueError:
+                    print("Invalid input. Please enter a number between 1 and 5.")
+            library.append((title, rating))
+
+        elif choice == "2":
+            if library:
+                while True:
+                    try:
+                        book_number = int(input("Enter the ranking number of the book to edit: "))
+                        if 1 <= book_number <= len(library):
+                            break
+                        else:
+                            print(f"Please enter a number between 1 and {len(library)}.")
+                    except ValueError:
+                        print("Invalid input. Please enter a valid number.")
+                title, _ = library[book_number - 1]
+                while True:
+                    try:
+                        new_rating = int(input(f"Re-rate '{title}' (1-5): "))
+                        if 1 <= new_rating <= 5:
+                            break
+                        else:
+                            print("Rating must be between 1 and 5.")
+                    except ValueError:
+                        print("Invalid input. Please enter a number between 1 and 5.")
+                library[book_number - 1] = (title, new_rating)
+            else:
+                print("Your library is empty. No books to edit.")
+
+        elif choice == "3":
+            if library:
+                while True:
+                    try:
+                        book_number = int(input("Enter the ranking number of the book to delete: "))
+                        if 1 <= book_number <= len(library):
+                            break
+                        else:
+                            print(f"Please enter a number between 1 and {len(library)}.")
+                    except ValueError:
+                        print("Invalid input. Please enter a valid number.")
+                removed_book = library.pop(book_number - 1)
+                print(f"'{removed_book[0]}' has been removed from your library.")
+            else:
+                print("Your library is empty. No books to delete.")
+
+        elif choice == "4":
+            print("Thank you for visiting, Happy reading!")
+            break
+
+        else:
+            print("Invalid choice. Please select a valid option.")
+
+if __name__ == "__main__":
+    main()
